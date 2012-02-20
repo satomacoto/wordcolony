@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>wordcolony with d3.js</title>
+    <link rel="stylesheet" href="static/css/d3js.css" type="text/css" />
+    <link rel="stylesheet" href="static/css/bootstrap.css" type="text/css" />
+    <style type="text/css">
+    </style>
+    <script type="text/javascript" src="static/js/d3.v2.min.js"></script>
+    <script type="text/javascript" src="static/js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="static/js/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="static/js/bootstrap-tooltip.js"></script>
+    <script type="text/javascript" src="static/js/bootstrap-transition.js"></script>
+    <script type="text/javascript" src="static/js/d3js.js"></script>
+  </head>
+  
+  <body>
+    <div class="container">
+      
+      <div class="row">
+        <div class="span4"><h2>wordcolony</h2></div>
+        <div class="span2 offset6"><a class="btn" data-toggle="modal" href="#myModal">Show Panel</a></div>
+      </div>
+
+      <!-- graph -->
+      <div id="graph"></div>
+      
+      <!-- panel -->
+      <div id="myModal" class="modal hide fade" style="display: hide;">
+        <div class="modal-header">
+          <a class="close" data-dismiss="modal">×</a>
+          <h3>wordcolony with d3.js</h3>
+        </div>
+        <div class="modal-body">
+          <div align="center">
+            <textarea id="text" name="text" class="span6" rows="10">ドキュメントの共起依存度と吸引力を求め，グラフ構造で表します．共起依存度は語の共起の条件付き確率で語の依存関係を示します．吸引力は語の被共起依存度の和で語の重要度を示します．ここに解析対象のドキュメントを入力して，get graphボタンをクリックすると解析が始まり，しばらくすると結果が表示されます．</textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn btn-primary" id="get_graph">Get graph</a>
+          <a href="#" class="btn" data-dismiss="modal">Close</a>
+        </div>
+      </div>
+      
+      <!-- table -->
+      <div class="row">
+        <div class="span8">
+          <table id="myTable" class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Key</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>      
+      </div>
+      
+    </div>    
+  </body>
+</html>
