@@ -170,7 +170,6 @@ def main():
     lang = request.form['lang'] if 'lang' in request.form else 'en'
     output = request.form['output'] if 'output' in request.form else 'json'
     callback = request.form['callback'] if 'callback' in request.form else ''
-    
     #
     tokens = tokenize(text, lang)
     td, attr = get_scene(tokens)
