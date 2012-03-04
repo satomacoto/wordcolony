@@ -7,7 +7,6 @@ app = Flask(__name__)
 
 
 import os
-import cgi
 import simplejson
 from urllib import urlencode, unquote_plus
 from xml.dom import minidom
@@ -17,7 +16,12 @@ from src.dok_matrix import *
 from src.yahooapi import MAService
 import src.dok as dok
 
-def tokenize(text,lang='en'):
+def tokenize(text, lang='en'):
+    '''
+    >>> text = 'Hello world. This is a test.'
+    >>> tokenize(text, lang='en')
+    [['Hello', 'world'], ['This', 'is', 'a', 'test']]
+    '''
     if lang == 'en':
         return etokenize(text)
     elif lang == 'ja':
@@ -42,7 +46,7 @@ def jtokenize(text,sep=['.','。','．','\n'],filter=['9']):
     client = MAService()
 
     # set the end of sentence
-    eos = 'EOS'
+    eos = '__EOS__'
     
     for x in sep:
         text = text.replace(x, ' '+eos+' ')
@@ -104,7 +108,7 @@ def to_stv(d):
             r += [{ "source": s, "target": t, "value": v }]
     return r
 
-def output(handler,data,callback=''):
+def output(handler, data, callback=''):
     json = simplejson.dumps(data, ensure_ascii=False)
     handler.response.headers["Content-Type"] = "text/javascript"
     handler.response.out.write("%s(%s)" % (callback,json))

@@ -4,3 +4,4 @@ Werkzeug==0.8.3
 distribute==0.6.24
 wsgiref==0.1.2
 simplejson==2.3.2
+BeautifulSoup==3.2.0

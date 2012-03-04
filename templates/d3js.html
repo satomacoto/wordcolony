@@ -76,12 +76,26 @@
       <div class="page-header"></div>
       <div class="row">
         <div class="span6">
-        
+        <h3>Definition</h3>
         <p>
         Term dependency:
         $$ td(t,t') = \frac{sentences(t,t')}{sentences(t)} $$
         Term attractiveness:
         $$ attr(t) = \sum_{t'' \in T} td(t'',t) $$
+        </p>
+        <h3>Types</h3>
+        <p>
+            <ul>
+                <li>Interdependent:
+                    $$td(t,t') \ge \delta, td(t',t) \ge \delta$$
+                </li>
+                <li>Dependent:
+                    $$td(t,t') \gt \sigma \ge \mu \ge td(t',t)$$
+                </li>
+                <li>Independent:
+                    $$others$$
+                </li>
+            </ul>
         </p>
         </div>
         <div class="span6">
