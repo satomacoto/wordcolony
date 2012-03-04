@@ -46,7 +46,7 @@ def jtokenize(text,sep=['.','。','．','\n'],filter=['9']):
     client = MAService()
 
     # set the end of sentence
-    eos = '__EOS__'
+    eos = 'EOS'
     
     for x in sep:
         text = text.replace(x, ' '+eos+' ')
