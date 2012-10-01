@@ -129,6 +129,7 @@ function get_graph(text) {
 
     show_graph({nodes:nodes, links:links});
     
+    $("#myTable tbody").empty();
     for (var i = 0; i < data.elements.attr.length; i++) {
       var key = data.elements.attr[i].key;
       var value = data.elements.attr[i].value;
