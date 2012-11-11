@@ -1,9 +1,12 @@
+var width = 940;
+var height = 500;
+
 function show_graph(graph) {
   var nodes = graph.nodes;
   var links = graph.links;
 
-  var w = 940,
-      h = 500,
+  var w = width,
+      h = height,
       fill = d3.scale.category20();
 
   var vis = d3.select("#graph")
@@ -41,7 +44,8 @@ function show_graph(graph) {
     .enter()
       .append("svg:g")
       .attr("class", "node")
-      .attr("key", function(d) {return d.key;})
+      .attr("key", function(d) { return d.key; })
+      .attr("fixed", function(d) { return d.fixed ? d.fixed : false; })
       .call(force.drag);
 
   // add text
@@ -100,7 +104,6 @@ function get_graph(text) {
     "output": "json",
     "lang": "ja"
   }, function (json) {
-    console.log(json);
     var data = eval("(" + json + ")");
   
     // nodesとlinksの設定
@@ -108,6 +111,10 @@ function get_graph(text) {
     nodes.sort(function(a,b){return b.value-a.value});
     var node_keys = []; // ノードキー
     var max_value = nodes[0].value;
+    nodes[0].fixed = true;
+    nodes[0].x = width / 2;
+    nodes[0].y = height / 2;
+    
     var g = 0; // グループの設定
     for (var i = 0; i < nodes.length; i++) {
       nodes[i].group = g++ % 20; // 適当にグループを設定
@@ -129,6 +136,7 @@ function get_graph(text) {
 
     show_graph({nodes:nodes, links:links});
     
+    // データの表示
     $("#myTable tbody").empty();
     for (var i = 0; i < data.elements.attr.length; i++) {
       var key = data.elements.attr[i].key;
