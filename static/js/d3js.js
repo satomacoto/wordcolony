@@ -48,7 +48,7 @@ function show_graph(graph) {
       .insert("svg:line")
       .attr("class", "link")
       .style("stroke", function(d) {
-        return d.stroke ? d.stroke : '#333';
+        return d.stroke ? d.stroke : '#ccc';
       })
       .style("stroke-width", function(d) {
         return d.strokeWidth ? d.strokeWidth : 1;

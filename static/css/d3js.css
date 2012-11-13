@@ -2,7 +2,7 @@ body {
   padding-top: 20px;
 }
 .link {
-  stroke: #ccc;
+  stroke: #efefef;
 }
 .nodetext {
   pointer-events: none;
@@ -13,7 +13,7 @@ circle.node {
   stroke-width: 1.5px;
 }
 line.link {
-  stroke: #999;
+  stroke: #efefef;
   stroke-opacity: .6;
 }
 #graph {
