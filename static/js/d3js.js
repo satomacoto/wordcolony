@@ -10,9 +10,28 @@ function show_graph(graph) {
       fill = d3.scale.category20();
 
   var vis = d3.select("#graph")
-      .append("svg:svg")
+    .append("svg:svg")
       .attr("width", w)
-      .attr("height", h);
+      .attr("height", h)
+      .attr("pointer-events", "all")
+    .append("svg:g")
+      .call(d3.behavior.zoom().on("zoom", redraw))
+    .append("svg:g");
+  
+  vis.append('svg:rect')
+      .attr('x', -100000)
+      .attr('y', -100000)
+      .attr('width', 200000)
+      .attr('height', 200000)
+      .attr('fill', 'white');
+  
+  function redraw() {
+    //console.log("here", d3.event.translate, d3.event.scale);
+    vis.attr("transform",
+        "translate(" + d3.event.translate + ")"
+        + " scale(" + d3.event.scale + ")");
+  }
+  
 
   var force = d3.layout.force()
       .nodes(nodes)
