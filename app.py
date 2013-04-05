@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, abort
 app = Flask(__name__)
 
 
@@ -40,7 +40,7 @@ def etokenize(text):
         sentences.append(tokens)
     return sentences
 
-def jtokenize(text,sep=['.','。','．','\n'],filter=['9']):
+def jtokenize(text, sep=['.','。','．','\n'], filter=['9']):
     # yahoo api
     p = Parser()
     client = MAService()
@@ -174,6 +174,10 @@ def main():
     lang = request.form['lang'] if 'lang' in request.form else 'en'
     output = request.form['output'] if 'output' in request.form else 'json'
     callback = request.form['callback'] if 'callback' in request.form else ''
+    #
+    # error
+    if len(text) > 30000:
+        abort(400)
     #
     tokens = tokenize(text, lang)
     td, attr = get_scene(tokens)
