@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 import os
 
-from flask import Flask, render_template, request, abort
+from flask import Flask, render_template, request, abort, jsonify
 app = Flask(__name__)
 
 
 import os
-import simplejson as json
-# import json
+# import simplejson as json
+import json
 from urllib import urlencode, unquote_plus
 from xml.dom import minidom
 from src.parser import Parser
@@ -171,13 +171,18 @@ def getxml(nodes, edges):
 
 @app.route('/td_attr', methods=['POST', 'GET'])
 def main():
-    text = request.form['text']
-    lang = request.form['lang'] if 'lang' in request.form else 'en'
-    output = request.form['output'] if 'output' in request.form else 'json'
-    callback = request.form['callback'] if 'callback' in request.form else ''
-    #
+    if request.method == 'POST':
+        text = request.form['text']
+        lang = request.form['lang'] if 'lang' in request.form else 'en'
+        output = request.form['output'] if 'output' in request.form else 'json'
+        callback = request.form['callback'] if 'callback' in request.form else ''
+    else:
+        text = request.args.get('text')
+        lang = request.args.get('lang') if 'lang' in request.args else 'en'
+        output = request.args.get('output') if 'output' in request.args else 'json'
+        callback = request.args.get('callback') if 'callback' in request.args else ''    #
     # error
-    if len(text) > 30000:
+    if len(text) > 10000:
         abort(400)
     #
     tokens = tokenize(text, lang)
@@ -190,7 +195,7 @@ def main():
         return getxml(attr, _td)
     else:
         scene = {"td": to_stv(td), "attr": to_kv(attr)}
-        jsondata = json.dumps({ "elements":scene }, ensure_ascii=False)
+        jsondata = json.dumps({ "elements":scene })
         return "%s(%s)" % (callback, jsondata.encode('utf-8'))
 
 @app.route('/')
