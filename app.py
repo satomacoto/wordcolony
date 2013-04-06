@@ -7,7 +7,8 @@ app = Flask(__name__)
 
 
 import os
-import simplejson
+import simplejson as json
+# import json
 from urllib import urlencode, unquote_plus
 from xml.dom import minidom
 from src.parser import Parser
@@ -109,9 +110,9 @@ def to_stv(d):
     return r
 
 def output(handler, data, callback=''):
-    json = simplejson.dumps(data, ensure_ascii=False)
+    jsondata = json.dumps(data, ensure_ascii=False)
     handler.response.headers["Content-Type"] = "text/javascript"
-    handler.response.out.write("%s(%s)" % (callback,json))
+    handler.response.out.write("%s(%s)" % (callback, jsondata))
 
 def getxml(nodes, edges):
     '''
@@ -189,8 +190,8 @@ def main():
         return getxml(attr, _td)
     else:
         scene = {"td": to_stv(td), "attr": to_kv(attr)}
-        json = simplejson.dumps({ "elements":scene }, ensure_ascii=False)
-        return "%s(%s)" % (callback, json.encode('utf-8'))
+        jsondata = json.dumps({ "elements":scene }, ensure_ascii=False)
+        return "%s(%s)" % (callback, jsondata.encode('utf-8'))
 
 @app.route('/')
 def hello():
