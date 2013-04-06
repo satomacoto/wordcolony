@@ -41,7 +41,7 @@ def etokenize(text):
         sentences.append(tokens)
     return sentences
 
-def jtokenize(text, sep=['.','。','．','\n'], filter=['9']):
+def jtokenize(text, sep=['.', '。', '．', '\n'], filter=['9']):
     # yahoo api
     p = Parser()
     client = MAService()
@@ -50,14 +50,14 @@ def jtokenize(text, sep=['.','。','．','\n'], filter=['9']):
     eos = 'EOS'
     
     for x in sep:
-        text = text.replace(x, ' '+eos+' ')
+        text = text.replace(x, ' ' + eos + ' ')
     text += eos
     
     # filter
     filter = "|".join(filter)
     
     # get json
-    words = client.parse(text,filter=filter)
+    words = client.parse(text, filter=filter)
     
     # split document
     sentences = []
@@ -80,31 +80,32 @@ def jtokenize(text, sep=['.','。','．','\n'], filter=['9']):
             if settoji:
                 baseform = settoji + baseform
                 settoji = ""
-            # ストップワーズ
+            # ストップワードの除去
             if baseform in p.stopwords: continue
             temp += [baseform]
     
+    # 空の除去
     sentences = [ sentence for sentence in sentences if sentence ]
 #    sentences = [ [ word for word in sentence] for sentence in sentences ]
     return sentences
 
 def get_scene(sentences):
-    tc,cc,td,attr = analyze(sentences)
-    return td,attr
+    tc, cc, td, attr = analyze(sentences)
+    return td, attr
 
-def get_bridge(source,target):
+def get_bridge(source, target):
     bridge = {}
     return bridge
     
 def to_kv(d):
     r = []
-    for k,v in d.items():
+    for k, v in d.items():
         r += [{ "key": k, "value": v }]
     return r
     
 def to_stv(d):
     r = []
-    for (s,t),v in d.items():
+    for (s, t), v in d.items():
         if v > 0:
             r += [{ "source": s, "target": t, "value": v }]
     return r
@@ -117,7 +118,7 @@ def output(handler, data, callback=''):
 def getxml(nodes, edges):
     '''
     nodes: { k:v, ...
-    edges: { (s,t):v, ...
+    edges: { (s, t):v, ...
     '''
     doc = minidom.Document()
     
@@ -130,21 +131,21 @@ def getxml(nodes, edges):
     # key label    
     def set_key(_id, _for, _attrname, _attrtype):
         weight = doc.createElement('key')
-        for k,v in [('id',_id), ('for',_for), ('attr.name',_attrname), ('attr.type',_attrtype)]:
+        for k, v in [('id', _id), ('for', _for), ('attr.name', _attrname), ('attr.type', _attrtype)]:
             weight.setAttribute(k, v)
         graphml.appendChild(weight)
-    set_key('label','all','label','string')
-    set_key('weight','node','weight','double')
+    set_key('label', 'all', 'label', 'string')
+    set_key('weight', 'node', 'weight', 'double')
     
     # graph
     graph = doc.createElement('graph')
-    graph.setAttribute('edgedefault','directed')
+    graph.setAttribute('edgedefault', 'directed')
     graphml.appendChild(graph)
     
     def set_node(id, label, weight='1.0'):
         node = doc.createElement('node')
-        node.setAttribute('id',id)
-        for k,v in [('label', label), ('weight', weight)]:
+        node.setAttribute('id', id)
+        for k, v in [('label', label), ('weight', weight)]:
             data = doc.createElement('data')
             data.setAttribute('key', k)
             data.appendChild(doc.createTextNode(v))
@@ -153,19 +154,19 @@ def getxml(nodes, edges):
     
     def set_edge(source, target, weight='1.0'):
         edge = doc.createElement('edge')
-        edge.setAttribute('source',source)
-        edge.setAttribute('target',target)
+        edge.setAttribute('source', source)
+        edge.setAttribute('target', target)
 #        data = doc.createElement('data')
-#        data.setAttribute('key','weight')
+#        data.setAttribute('key', 'weight')
 #        data.appendChild(doc.createTextNode(weight))
 #        edge.appendChild(data)
         graph.appendChild(edge)
     
     # graph
-    for k,v in nodes.items():
-        set_node(k,k,str(v))
-    for (s,t),v in edges.items():
-        set_edge(s,t,str(v)) 
+    for k, v in nodes.items():
+        set_node(k, k, str(v))
+    for (s, t), v in edges.items():
+        set_edge(s, t, str(v)) 
     
     return doc.toprettyxml(indent = '    ')
 
@@ -189,13 +190,13 @@ def main():
     td, attr = get_scene(tokens)
     if output == 'xml':
         _td = {}
-        for (s,t),v in td.items():
+        for (s, t), v in td.items():
             if s <> t and v > 0.8:
-                _td[s,t] = v
+                _td[s, t] = v
         return getxml(attr, _td)
     else:
         scene = {"td": to_stv(td), "attr": to_kv(attr)}
-        res = jsonify({ "elements":scene }, callback=callback)
+        res = jsonify({"elements": scene}, callback=callback)
         # return "%s(%s)" % (callback, res.encode('utf-8'))
         app.logger.error(res)
         return res
