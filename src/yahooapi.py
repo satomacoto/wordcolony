@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import urllib
-import simplejson
+#import simplejson
 from xml.dom import minidom
 
 class MAService():
