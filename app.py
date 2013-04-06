@@ -195,8 +195,10 @@ def main():
         return getxml(attr, _td)
     else:
         scene = {"td": to_stv(td), "attr": to_kv(attr)}
-        jsondata = json.dumps({ "elements":scene })
-        return "%s(%s)" % (callback, jsondata.encode('utf-8'))
+        res = jsonify({ "elements":scene }, callback=callback)
+        # return "%s(%s)" % (callback, res.encode('utf-8'))
+        app.logger.error(res)
+        return res
 
 @app.route('/')
 def hello():

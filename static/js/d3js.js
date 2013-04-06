@@ -122,9 +122,7 @@ function get_graph(text) {
     "text": text,
     "output": "json",
     "lang": "ja"
-  }, function (json) {
-    var data = eval("(" + json + ")");
-  
+  }, function (data) {  
     // nodesとlinksの設定
     var nodes = data.elements.attr;
     nodes.sort(function(a,b){return b.value-a.value});
